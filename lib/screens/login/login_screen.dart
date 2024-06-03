@@ -3,7 +3,11 @@ import 'package:story/constants.dart';
 import 'package:story/screens/login/components/body.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+    //required this.name,
+    //required this.email,
+  });
 
   @override
   Widget build(BuildContext context) {

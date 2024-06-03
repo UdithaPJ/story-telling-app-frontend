@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:story/constants.dart';
+import 'package:story/screens/login/login_screen.dart';
+import 'package:story/screens/selectedStory/selectedStory_screen.dart';
+import 'package:story/screens/selectedStoryDetails/selectedStoryDetails%20_screen.dart';
+import 'package:story/screens/signup/signup_screen.dart';
+import 'package:story/screens/storiesOnACategory/storiesOnACategory_screen.dart';
 import 'package:story/screens/welcome/welcome_screen.dart';
 
 void main() {
@@ -15,11 +20,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-      ),
+      // theme: ThemeData(
+      //   primaryColor: kPrimaryColor,
+      //   scaffoldBackgroundColor: Colors.white,
+      // ),
       home: WelcomeScreen(),
+      routes: {
+        '/welcome': (context) => const WelcomeScreen(),
+        '/signin': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/storyCategories': (context) => const StoriesOnACategoryScreen(),
+        '/selectedStoryDetails': (context) =>
+            const SelectedStoryDetailsScreen(),
+        '/selectedStory': (context) => const SelectedStoryScreen(),
+        // '/order': (context) => const Order(),
+        // '/profile': (context) => const Profile(),
+        // '/activities': (context) => const Activities()
+      },
     );
   }
 }

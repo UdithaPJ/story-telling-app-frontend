@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-class GetStartedButton extends StatelessWidget {
+class SimpleTextButton extends StatelessWidget {
   final String text;
-  final void Function() press;
   final Color color, textColor;
-  final double width;
-  const GetStartedButton({
+  final double width, height, textSize;
+
+  const SimpleTextButton({
     super.key,
     required this.text,
-    required this.press,
     required this.color,
     required this.textColor,
     required this.width,
+    required this.height,
+    required this.textSize,
   });
 
   @override
@@ -19,15 +20,12 @@ class GetStartedButton extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width * width,
+      height: size.height * height,
       child: ElevatedButton(
-          onPressed: press,
+          onPressed: () {},
           child: Text(
             text,
-            style: TextStyle(
-                color: textColor,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
+            style: TextStyle(color: textColor, fontSize: textSize),
           ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(color),

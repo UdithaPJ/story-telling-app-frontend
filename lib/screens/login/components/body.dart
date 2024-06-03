@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:story/components/already_have_an_account_check.dart';
 import 'package:story/components/get_started_button.dart';
 import 'package:story/components/rounded_input_field_email.dart';
 import 'package:story/components/rounded_password_field.dart';
+import 'package:story/navigation_menu.dart';
 import 'package:story/screens/login/components/background.dart';
 import 'package:story/screens/signup/signup_screen.dart';
+import 'package:story/screens/storiesOnACategory/storiesOnACategory_screen.dart';
 
 class Body extends StatelessWidget {
   const Body({
@@ -82,7 +85,17 @@ class Body extends StatelessWidget {
           ),
           GetStartedButton(
             text: "Sign in",
-            press: () {},
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return StoriesOnACategoryScreen();
+                  },
+                ),
+              );
+            },
+            //() => Get.to(() => const NavigationMenu()),
           ),
           SizedBox(
             height: size.height * 0.01,
