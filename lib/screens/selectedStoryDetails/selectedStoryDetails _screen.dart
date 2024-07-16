@@ -15,6 +15,12 @@ class _SelectedStoryDetailsScreenState
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final id = args["id"];
+    if (id == null) {
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Story Details'),
@@ -25,6 +31,7 @@ class _SelectedStoryDetailsScreenState
       //backgroundColor: kPrimaryLightColor,
       body: Body(
         child: SingleChildScrollView(),
+        id: id,
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: kPrimaryLightColor,
