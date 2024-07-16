@@ -44,8 +44,10 @@ class UserAuth {
     }
 
     // Check if token is valid
-    final validate_url = Uri.dataFromString(kServerDomain + "/api/user/get-current-user"); 
-    final response = await http.get(validate_url, headers: {});
+    final validate_url = Uri.parse(kServerDomain + "/api/articles/get-suggested");//"/api/user/get-current-user"); 
+    final response = await http.post(validate_url, headers: {
+      "Authorization": "Bearer " + token
+    });
     if (response.statusCode == 200) {
       // set user data from response // json
       user = jsonDecode(response.body);

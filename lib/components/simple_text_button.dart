@@ -25,7 +25,7 @@ class SimpleTextButton extends StatelessWidget {
           onPressed: () {},
           child: Text(
             text,
-            style: TextStyle(color: textColor, fontSize: textSize),
+            style: TextStyle(color: textColor, fontSize: textSize, overflow: TextOverflow.ellipsis),
           ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(color),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:story/screens/storiesOnACategory/storiesOnACategory_screen.dart';
 import 'package:story/screens/welcome/components/background.dart';
 import 'package:story/screens/welcome/welcome_screen.dart';
@@ -18,6 +17,7 @@ class SplashBody extends StatefulWidget {
 }
 
 class _SplashBodyLoadingState extends State<SplashBody> {
+
 
   void checkUser(BuildContext context){
     var userAuth = UserAuth();
@@ -45,6 +45,8 @@ class _SplashBodyLoadingState extends State<SplashBody> {
           ),
         ),
       }
+    }).catchError((e) {
+      print(e);
     });
   }
 
