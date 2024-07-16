@@ -1,13 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:story/components/already_have_an_account_check.dart';
-import 'package:story/components/get_started_button.dart';
-import 'package:story/components/rounded_input_field_email.dart';
-import 'package:story/components/rounded_input_field_person.dart';
-import 'package:story/components/rounded_password_field.dart';
 import 'package:story/components/simple_text_button.dart';
+import 'package:story/constants.dart';
 import 'package:story/screens/storiesOnACategory/components/background.dart';
-import 'package:story/screens/storiesOnACategory/storiesOnACategory_screen.dart';
-import 'package:story/screens/welcome/welcome_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:story/scripts/user_auth.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
@@ -21,6 +19,34 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  var isLoading = false;
+  var articles = [];
+
+
+  void get_articles() {
+    if (isLoading) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    var url = Uri.parse(kServerDomain + "/api/articles/get-suggested");
+    var response = http.get(url, headers: {
+      "Content-Type": "application/json"
+    });
+    response.then((value) {
+      if (value.statusCode == 200){
+        // save token and go to home screen
+        var message = JsonDecoder().convert(value.body);
+        if (message["token"] != null){
+          // save token
+          UserAuth().saveToken(message["token"]);
+        }
+      }
+    }).whenComplete(() => setState(() {
+      isLoading = false;
+    }));
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

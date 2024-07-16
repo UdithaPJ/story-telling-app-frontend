@@ -11,6 +11,7 @@ class StoriesOnACategoryScreen extends StatefulWidget {
 }
 
 class _StoriesOnACategoryScreenState extends State<StoriesOnACategoryScreen> {
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
