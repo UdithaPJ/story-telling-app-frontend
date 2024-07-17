@@ -14,7 +14,7 @@ class _SelectedStoryDetailsScreenState
     extends State<SelectedStoryDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    //Size size = MediaQuery.of(context).size;
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     final id = args["id"];
     if (id == null) {
