@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:story/constants.dart';
 import 'package:story/screens/selectedStory/components/body.dart';
+import 'package:story/scripts/data_objects/full_story_item.dart';
 
 class SelectedStoryScreen extends StatefulWidget {
   const SelectedStoryScreen({super.key});
@@ -10,12 +11,22 @@ class SelectedStoryScreen extends StatefulWidget {
 }
 
 class _SelectedStoryScreenState extends State<SelectedStoryScreen> {
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    //Size size = MediaQuery.of(context).size;
+    var args = ModalRoute.of(context)!.settings.arguments as Map;;
+
+    FullStoryItem? story = args["story"] as FullStoryItem?;
+    if (story == null){
+      // return to home
+      Navigator.pop(context);
+      return Container();
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Part 1'),
+        title: Text(story.title),
         toolbarHeight: 75, // Adjust the height as needed
         elevation: 10.0,
         centerTitle: true,
@@ -23,6 +34,7 @@ class _SelectedStoryScreenState extends State<SelectedStoryScreen> {
       //backgroundColor: kPrimaryLightColor,
       body: Body(
         child: Column(),
+        story: story,
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: kPrimaryLightColor,

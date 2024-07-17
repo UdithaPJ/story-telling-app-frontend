@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:story/components/simple_text_button.dart';
 import 'package:story/constants.dart';
 import 'package:story/screens/storiesOnACategory/components/background.dart';
@@ -120,9 +119,12 @@ class _BodyState extends State<Body> {
                   SizedBox(
                       height:
                           8.0), // Add some space between the text and the buttons
-                  Row(
-                    children: getCategoriesWidgetList(),
-                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: getCategoriesWidgetList(),
+                    ),
+                  )
                 ],
               ),
             ),

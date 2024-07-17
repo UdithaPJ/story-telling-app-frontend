@@ -5,7 +5,6 @@ import 'package:story/components/rounded_input_field_email.dart';
 import 'package:story/components/rounded_input_field_person.dart';
 import 'package:story/components/rounded_password_field.dart';
 import 'package:story/screens/signup/components/background.dart';
-import 'package:story/screens/signup/signup_screen.dart';
 import 'package:story/screens/welcome/welcome_screen.dart';
 
 class Body extends StatelessWidget {

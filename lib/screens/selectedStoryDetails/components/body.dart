@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:story/components/StoryComments/story_comments_container.dart';
 import 'package:story/components/signin_button.dart';
 import 'package:story/constants.dart';
 import 'package:story/screens/selectedStoryDetails/components/background.dart';
@@ -22,21 +23,33 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
   FullStoryItem? story;
   var isLoading = true;
   String id = "1";
+  bool isLoadingComments = true;
 
   _BodyState(this.id){
     this.initState();
   }
 
+  void loadComments() {
+    // load comments
+    story?.loadComments().then((value) => {
+      setState(() {
+        isLoadingComments = false;
+      })
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    // story = FullStoryItem();
+    
+    // fetch story details
     story = null;
     FullStoryItem.fetchStory(id).then((value) => {
         setState(() {
             story = value;
             isLoading = false;
-        })
+        }),
+        loadComments()
     }).catchError((error){
         setState(() {
             isLoading = false;
@@ -173,7 +186,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                           children: [
                             Icon(
                               Icons.favorite,
-                              color: Color(0XFF818181).withOpacity(0.75),
+                              color: ((story!.didILiked)?Color.fromARGB(255, 255, 71, 71).withOpacity(0.75):Color(0XFF818181).withOpacity(0.75)),
                             ),
                             SizedBox(width: 4.0),
                             Text(
@@ -358,7 +371,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                     left: 5.0, // Space from the left
                     right: 5.0, // Space from the left and right
                   ),
-                  child: ListView.builder(
+                  child: StoryCommentsContainer(story: story!)
+                  /*ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
                       return Column(
@@ -433,7 +447,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         ],
                       );
                     },
-                  ),
+                  ),*/
                 ),
               ],
             ),
@@ -443,7 +457,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
             child: GetStartedButton(
                 text: 'START READING',
                 press: () {
-                  Navigator.pushNamed(context, '/selectedStory');
+                  Navigator.pushNamed(context, '/selectedStory', arguments: {'story': story});
                 },
                 color: Color(0XFF00B4D8),
                 textColor: Colors.white,

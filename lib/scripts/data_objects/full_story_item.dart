@@ -1,8 +1,10 @@
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:story/constants.dart';
+import 'package:story/scripts/data_objects/comment_single.dart';
 import 'package:story/scripts/user_auth.dart';
 
 class FullStoryItem {
@@ -16,6 +18,8 @@ class FullStoryItem {
 	int comments;
 	String content;
 	List<String>? body;
+  bool didILiked = false;
+  List<SingleComment> commentsList = [];
 
 	FullStoryItem({
 		required this.id,
@@ -27,8 +31,37 @@ class FullStoryItem {
 		required this.likes,
 		required this.comments,
 		required this.content,
-		this.body
+		this.body,
+    this.didILiked = false,
 	});
+
+  Future<void> likeThisStory() async {
+    final String token = (await UserAuth().loadToken()) ?? "";
+    final Uri url = Uri.parse(kServerDomain + "/api/stories/add-delete-like");
+    final response = await http.post(url, headers: {
+      "Authorization": "Bearer " + token,
+      "Content-Type": "application/json",
+    }, body: jsonEncode({
+      "story_id": id
+    }));
+
+    if (response.statusCode != 200){
+      throw Exception("Failed to like the story");
+    }
+
+    var data = jsonDecode(response.body);
+    this.likes = data["likes"];
+    didILiked = data["liked"];
+  }
+
+  Future<bool> loadComments() async {
+    try {
+      commentsList = await SingleComment.fetchComments(id);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
 
 	static Future<FullStoryItem?> fetchStory(String id) async {
@@ -61,7 +94,38 @@ class FullStoryItem {
 			likes: data["story"]["likes"],
 			comments: data["story"]["comments_count"],
 			content: data["story"]["content"],
-			body: List<String>.from(data["story"]["body"])
+			body: [],
+      didILiked: data["story"]["did_i_liked"]
 		);
 	}
+
+  static Future<List<dynamic>> fetchStoryBody(String id) async{
+    final String token = (await UserAuth().loadToken()) ?? "";
+		final Uri url = Uri.parse(kServerDomain + "/api/articles/get-body");
+		final response = await http.post(url, headers: {
+			"Authorization": "Bearer " + token,
+			"Content-Type": "application/json",
+		}, body: jsonEncode({
+			"story_id": id
+		}));
+
+		if (response.statusCode != 200){
+			return [];
+		}
+
+    var data = jsonDecode(response.body);
+		if (data["story"] == null){
+			return [];
+		}
+
+    List<dynamic> body = [];
+    for (var item in data["story"]){
+      body.add({
+        "type": item["type"],
+        "content": item["content"]
+      });
+    }
+    return body;
+  } 
+
 }

@@ -50,11 +50,18 @@ class _SplashBodyLoadingState extends State<SplashBody> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3), () {
+      checkUser(context);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    checkUser(context); // app-icon.png
 
     return Background(
       child: Column(
