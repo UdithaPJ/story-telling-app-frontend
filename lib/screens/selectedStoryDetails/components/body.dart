@@ -1,23 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:story/components/StoryComments/story_comments_container.dart';
 import 'package:story/components/signin_button.dart';
+import 'package:story/constants.dart';
 import 'package:story/screens/selectedStoryDetails/components/background.dart';
+import 'package:story/scripts/data_objects/full_story_item.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
+  final String id;
+
   const Body({
     super.key,
     required this.child,
+    required this.id,
   });
 
   @override
-  _BodyState createState() => _BodyState();
+  _BodyState createState() => _BodyState(id);
 }
 
 class _BodyState extends State<Body> with TickerProviderStateMixin {
+  FullStoryItem? story;
+  var isLoading = true;
+  String id = "1";
+  bool isLoadingComments = true;
+
+  _BodyState(this.id){
+    this.initState();
+  }
+
+  void loadComments() {
+    // load comments
+    story?.loadComments().then((value) => {
+      setState(() {
+        isLoadingComments = false;
+      })
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // fetch story details
+    story = null;
+    FullStoryItem.fetchStory(id).then((value) => {
+        setState(() {
+            story = value;
+            isLoading = false;
+        }),
+        loadComments()
+    }).catchError((error){
+        setState(() {
+            isLoading = false;
+        });
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TabController _tabController = TabController(length: 3, vsync: this);
+    if (isLoading) {
+      return Background(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    if (story == null) {
+      return Background(
+        child: Center(
+          child: Text("Story not found"),
+        ),
+      );
+    }
+
     return Background(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,15 +99,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image:
-                              AssetImage('assets/images/story-image-list.jpg')),
+                              AssetImage((story!.thumbnail == "")?'assets/images/story-image-list.jpg':kServerDomain + story!.thumbnail)),
                     ),
-                    // child: Image.asset(
-                    //   'assets/images/story-image-list.jpg',
-                    // ),
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    "Story Title",
+                    story!.title,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.8),
@@ -59,7 +115,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 7.0),
                   Text(
-                    "Author Profile",
+                    story?.user_name??"",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Color(0XFF818181),
@@ -129,12 +185,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         Row(
                           children: [
                             Icon(
-                              Icons.star,
-                              color: Color(0XFF818181).withOpacity(0.75),
+                              Icons.favorite,
+                              color: ((story!.didILiked)?Color.fromARGB(255, 255, 71, 71).withOpacity(0.75):Color(0XFF818181).withOpacity(0.75)),
                             ),
                             SizedBox(width: 4.0),
                             Text(
-                              "Votes",
+                              "Likes",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Color(0XFF818181),
@@ -146,7 +202,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                           ],
                         ),
                         Text(
-                          "15.3K",
+                          story!.likes.toString(),
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Color(0XFF000000).withOpacity(0.6),
@@ -164,12 +220,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         Row(
                           children: [
                             Icon(
-                              Icons.menu,
+                              Icons.comment,
                               color: Color(0XFF818181).withOpacity(0.75),
                             ),
                             SizedBox(width: 4.0),
                             Text(
-                              "Parts",
+                              "Comments",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Color(0XFF818181),
@@ -181,7 +237,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                           ],
                         ),
                         Text(
-                          "60",
+                          story!.comments.toString(),
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Color(0XFF000000).withOpacity(0.6),
@@ -207,9 +263,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               unselectedLabelColor: Color(0XFF818181),
               indicatorColor: Color(0XFF00B4D8),
               tabs: [
-                Tab(text: 'Synopsis'),
+                Tab(text: 'Description'),
                 Tab(text: 'Table of Content'),
-                Tab(text: 'Reviews'),
+                Tab(text: 'Comments'),
               ],
             ),
           ),
@@ -227,7 +283,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Text(
-                      'Embark on an epic adventure in Chronicles of Everglade: a mystical realm where ancient prophecies and hidden magic converge. As a young hero Embark on an epic adventure in Chronicles of Everglade: a mystical realm where ancient prophecies and hidden magic converge. As a young hero ',
+                      story!.content,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         color: Color(0xFF818181).withOpacity(0.75),
@@ -315,7 +371,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                     left: 5.0, // Space from the left
                     right: 5.0, // Space from the left and right
                   ),
-                  child: ListView.builder(
+                  child: StoryCommentsContainer(story: story!)
+                  /*ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
                       return Column(
@@ -390,7 +447,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         ],
                       );
                     },
-                  ),
+                  ),*/
                 ),
               ],
             ),
@@ -400,7 +457,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
             child: GetStartedButton(
                 text: 'START READING',
                 press: () {
-                  Navigator.pushNamed(context, '/selectedStory');
+                  Navigator.pushNamed(context, '/selectedStory', arguments: {'story': story});
                 },
                 color: Color(0XFF00B4D8),
                 textColor: Colors.white,

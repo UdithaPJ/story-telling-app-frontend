@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:story/constants.dart';
 import 'package:story/screens/login/login_screen.dart';
 import 'package:story/screens/previewStory/previewStory_screen.dart';
 import 'package:story/screens/readStoryPreview/readStoryPreview_screen.dart';
 import 'package:story/screens/selectedStory/selectedStory_screen.dart';
 import 'package:story/screens/selectedStoryDetails/selectedStoryDetails%20_screen.dart';
 import 'package:story/screens/signup/signup_screen.dart';
+import 'package:story/screens/splashScreen/splash_screen.dart';
 import 'package:story/screens/storiesOnACategory/storiesOnACategory_screen.dart';
 import 'package:story/screens/welcome/welcome_screen.dart';
 import 'package:story/screens/writeAStory/writeAStory_screen.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       //   primaryColor: kPrimaryColor,
       //   scaffoldBackgroundColor: Colors.white,
       // ),
-      home: WelcomeScreen(),
+      home: SplashScreen(),
       routes: {
         '/welcome': (context) => const WelcomeScreen(),
         '/signin': (context) => const LoginScreen(),
@@ -39,9 +39,6 @@ class MyApp extends StatelessWidget {
         '/writeAStory': (context) => const WriteAStoryScreen(),
         '/previewStory': (context) => const PreviewStoryScreen(),
         '/readStoryPreview': (context) => const ReadStoryPreviewScreen(),
-        // '/order': (context) => const Order(),
-        // '/profile': (context) => const Profile(),
-        // '/activities': (context) => const Activities()
       },
     );
   }
