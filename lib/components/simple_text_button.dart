@@ -4,16 +4,18 @@ class SimpleTextButton extends StatelessWidget {
   final String text;
   final Color color, textColor;
   final double width, height, textSize;
+  final VoidCallback? onPressed;
 
   const SimpleTextButton({
-    super.key,
+    Key? key,
     required this.text,
     required this.color,
     required this.textColor,
     required this.width,
     required this.height,
     required this.textSize,
-  });
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +24,18 @@ class SimpleTextButton extends StatelessWidget {
       width: size.width * width,
       height: size.height * height,
       child: ElevatedButton(
-          onPressed: () {},
-          child: Text(
-            text,
-            style: TextStyle(color: textColor, fontSize: textSize),
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: TextStyle(color: textColor, fontSize: textSize),
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(color),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(color),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
-          )),
+        ),
+      ),
     );
   }
 }
