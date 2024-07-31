@@ -29,6 +29,7 @@ class SingleComment {
     final response = await http.post(url, headers: {
 			"Authorization": "Bearer " + token,
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
     }, body: jsonEncode({
       "story_id": story_id
     }));

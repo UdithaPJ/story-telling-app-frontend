@@ -46,7 +46,8 @@ class UserAuth {
     // Check if token is valid
     final validate_url = Uri.parse(kServerDomain + "/api/articles/get-suggested");//"/api/user/get-current-user"); 
     final response = await http.post(validate_url, headers: {
-      "Authorization": "Bearer " + token
+      "Authorization": "Bearer " + token,
+      "ngrok-skip-browser-warning": "true"
     });
     if (response.statusCode == 200) {
       // set user data from response // json

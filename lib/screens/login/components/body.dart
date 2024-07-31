@@ -49,7 +49,8 @@ class _IdleLoginScreen extends State<Body>{
       "email": email,
       "password": password
     }), headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
     });
     response.then((value) {
       if (value.statusCode == 200){

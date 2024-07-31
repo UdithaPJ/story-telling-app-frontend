@@ -31,7 +31,8 @@ class SimpleStoryItem{
 		final String token = (await UserAuth().loadToken()) ?? "";
 		final Uri url = Uri.parse(kServerDomain + "/api/articles/get-suggested");
 		final response = await http.post(url, headers: {
-		"Authorization": "Bearer " + token
+		"Authorization": "Bearer " + token,
+      "ngrok-skip-browser-warning": "true"
 		});
 
 		if (response.statusCode != 200){

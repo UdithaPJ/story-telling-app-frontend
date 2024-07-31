@@ -4,6 +4,7 @@ import 'package:story/components/signin_button.dart';
 import 'package:story/constants.dart';
 import 'package:story/screens/selectedStoryDetails/components/background.dart';
 import 'package:story/scripts/data_objects/full_story_item.dart';
+import 'package:story/scripts/user_interaction_tracker.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
@@ -457,6 +458,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
             child: GetStartedButton(
                 text: 'START READING',
                 press: () {
+                  UserInteractionTracker.OnClickReadStory(story!.id);
                   Navigator.pushNamed(context, '/selectedStory', arguments: {'story': story});
                 },
                 color: Color(0XFF00B4D8),

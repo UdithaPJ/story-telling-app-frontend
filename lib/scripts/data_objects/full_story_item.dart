@@ -41,6 +41,7 @@ class FullStoryItem {
     final response = await http.post(url, headers: {
       "Authorization": "Bearer " + token,
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
     }, body: jsonEncode({
       "story_id": id
     }));
@@ -70,6 +71,7 @@ class FullStoryItem {
 		final response = await http.post(url, headers: {
 			"Authorization": "Bearer " + token,
 			"Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
 		}, body: jsonEncode({
 			"story_id": id
 		}));
@@ -105,6 +107,7 @@ class FullStoryItem {
 		final response = await http.post(url, headers: {
 			"Authorization": "Bearer " + token,
 			"Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
 		}, body: jsonEncode({
 			"story_id": id
 		}));

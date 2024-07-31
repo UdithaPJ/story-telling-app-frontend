@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:story/components/TextWidgets/text_paragraph.dart';
 import 'package:story/screens/selectedStory/components/background.dart';
 import 'package:story/scripts/data_objects/full_story_item.dart';
+import 'package:story/scripts/user_interaction_tracker.dart';
 
 class Body extends StatefulWidget {
   final Widget child;
@@ -20,6 +23,8 @@ class _BodyState extends State<Body> {
   final FullStoryItem story;
   List<dynamic> content = [];
   bool isLoading = true;
+  Timer? readingTimer;
+  int readingTime = 0; // minutes
   
   _BodyState({required this.story}){
     isLoading = true;
@@ -28,8 +33,28 @@ class _BodyState extends State<Body> {
       setState(() {
         content = value;
         isLoading = false;
+        startReadingTimer();
       })
     });
+  }
+
+  void startReadingTimer(){
+    readingTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+      readingTime += 1;
+      if (readingTime % 5 == 0){
+        recodeUserInteractionsReading();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    readingTimer?.cancel();
+    super.dispose();
+  }
+
+  void recodeUserInteractionsReading(){
+    UserInteractionTracker.OnReadForNMins(story.id, readingTime);
   }
 
   List<Widget> bodyContent(List<dynamic> content){

@@ -36,7 +36,8 @@ class _BodyState extends State<Body> {
     });
     var url = Uri.parse(kServerDomain + "/api/articles/get-suggested");
     var response = http.get(url, headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
     });
     response.then((value) {
       if (value.statusCode == 200){
