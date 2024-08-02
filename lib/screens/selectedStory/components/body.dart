@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:story/components/TextWidgets/love_this_story.dart';
 import 'package:story/components/TextWidgets/text_paragraph.dart';
 import 'package:story/screens/selectedStory/components/background.dart';
 import 'package:story/scripts/data_objects/full_story_item.dart';
@@ -66,6 +67,7 @@ class _BodyState extends State<Body> {
         );
       }
     }
+    contentWidgets.add(LoveThisStoryBtn(story:this.story));
     return contentWidgets;
   }
 

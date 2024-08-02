@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:story/screens/login/login_screen.dart';
+import 'package:story/screens/profile/userProfile.dart';
 import 'package:story/screens/selectedStory/selectedStory_screen.dart';
 import 'package:story/screens/selectedStoryDetails/selectedStoryDetails%20_screen.dart';
 import 'package:story/screens/signup/signup_screen.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             const SelectedStoryDetailsScreen(),
         '/selectedStory': (context) => const SelectedStoryScreen(),
         // '/order': (context) => const Order(),
-        // '/profile': (context) => const Profile(),
+        '/profile': (context) => const UserProfilePage(),
         // '/activities': (context) => const Activities()
       },
     );

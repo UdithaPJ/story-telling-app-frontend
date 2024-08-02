@@ -52,7 +52,7 @@ class _StoriesOnACategoryScreenState extends State<StoriesOnACategoryScreen> {
 				],
 				onTap: (int n) {
 				//if (n == 1) Navigator.pushNamed(context, '/activities');
-				//if (n == 2) Navigator.pushNamed(context, '/profile');
+				if (n == 2) Navigator.pushNamed(context, '/profile');
 				},
 				currentIndex: 0,
 				selectedItemColor: kPrimaryDarkColor,
